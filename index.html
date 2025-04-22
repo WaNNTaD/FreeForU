@@ -1,106 +1,101 @@
 <!DOCTYPE html>
-
 <html lang="fr">
-
 <head>
-
   <meta charset="UTF-8">
-
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <meta name="robots" content="noindex, nofollow">
-
   <title>FreeForY🖤U</title>
-
   <style>
-
-
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
-
-
+    /* Import techno/neon fonts */
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Audiowide&display=swap');
 
     * {
-
       margin: 0;
-
       padding: 0;
-
       box-sizing: border-box;
-
     }
-
     body {
-
-      background-color: #f5f5f7;
-
-      color: #111;
-
-      font-family: 'Inter', sans-serif;
-
+      background: #0d0d0d;
+      color: #fff;
+      font-family: 'Orbitron', sans-serif;
       display: flex;
-
       justify-content: center;
-
       align-items: center;
-
       height: 100vh;
-
       text-align: center;
-
       padding: 1rem;
-
+      overflow: hidden;
     }
-
     .container {
-
-      background: #ffffff;
-
-      padding: 2rem 3rem;
-
+      background: rgba(13,13,13,0.8);
+      padding: 2.5rem 3rem;
       border-radius: 1rem;
-
-      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-
-      max-width: 400px;
-
+      border: 2px solid #39ff14;
+      box-shadow: 0 0 20px rgba(57,255,20,0.7);
+      max-width: 450px;
       width: 100%;
-
+      animation: pulse 2s infinite;
     }
-
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 20px rgba(57,255,20,0.7); }
+      50% { box-shadow: 0 0 40px rgba(57,255,20,1); }
+    }
     h1 {
-
-      font-size: 2.5rem;
-
+      font-family: 'Audiowide', cursive;
+      font-size: 2rem;
+      font-weight: 400;
+      letter-spacing: 2px;
+      color: #39ff14;
+      text-shadow: 0 0 8px rgba(57,255,20,0.8), 0 0 16px rgba(57,255,20,0.6);
+      margin-bottom: 1.2rem;
+    }
+    .highlight {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.2rem;
       font-weight: 700;
-
+      color: #ff073a;
+      text-shadow: 0 0 8px rgba(255,7,58,0.8), 0 0 16px rgba(255,7,58,0.6);
       margin-bottom: 1.5rem;
-
+      animation: neon 1.5s ease-in-out infinite alternate;
     }
-
+    @keyframes neon {
+      from { text-shadow: 0 0 5px rgba(255,7,58,0.6), 0 0 10px rgba(255,7,58,0.4); }
+      to { text-shadow: 0 0 20px rgba(255,7,58,1), 0 0 30px rgba(255,7,58,0.8); }
+    }
     p {
-
-      font-size: 1rem;
-
+      font-size: 0.9rem;
       line-height: 1.6;
-
-      color: #555;
-
+      color: #ccc;
+      text-shadow: 0 0 4px rgba(255,255,255,0.2);
     }
-
+    a {
+      color: #39ff14;
+      text-decoration: none;
+      position: relative;
+    }
+    a::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -3px;
+      width: 100%;
+      height: 2px;
+      background: #39ff14;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s ease;
+    }
+    a:hover::after {
+      transform: scaleX(1);
+    }
   </style>
-
 </head>
-
 <body>
-
   <div class="container">
-
     <h1>FreeForY🖤U</h1>
-
+    <div class="highlight">Drive Safe</div>
     <p>Rue Lisière du bois 16<br>7063 Neufvilles</p>
-
   </div>
-
 </body>
-
 </html>
