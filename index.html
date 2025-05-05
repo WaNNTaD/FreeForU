@@ -10,13 +10,18 @@
     @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
     @import url('https://fonts.googleapis.com/css2?family=Audiowide&display=swap');
 
+    :root {
+      --mx: 50%;
+      --my: 50%;
+    }
+
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
     body {
-      background: #0d0d0d;
+      background: #0d0d0d; /* fallback solide */
       color: #fff;
       font-family: 'Orbitron', sans-serif;
       display: flex;
@@ -27,12 +32,23 @@
       padding: 1rem;
       overflow: hidden;
     }
+    /* calque de fond animé */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at var(--mx) var(--my), #29003d, #0d0d0d);
+      pointer-events: none;
+      z-index: -1;
+      transition: background 0.1s ease-out;
+    }
     .container {
-      background: rgba(13,13,13,0.8);
+      backdrop-filter: blur(12px);
+      background: rgba(20,20,20,0.6);
       padding: 2.5rem 3rem;
       border-radius: 1rem;
-      border: 2px solid #39ff14;
-      box-shadow: 0 0 20px rgba(57,255,20,0.7);
+      border: 1px solid #39ff14;
+      box-shadow: 0 0 30px rgba(57,255,20,0.8);
       max-width: 450px;
       width: 100%;
       animation: pulse 2s infinite;
@@ -58,6 +74,7 @@
       text-shadow: 0 0 8px rgba(255,7,58,0.8), 0 0 16px rgba(255,7,58,0.6);
       margin-bottom: 1.5rem;
       animation: neon 1.5s ease-in-out infinite alternate;
+      transition: text-shadow 0.3s ease;
     }
     @keyframes neon {
       from { text-shadow: 0 0 5px rgba(255,7,58,0.6), 0 0 10px rgba(255,7,58,0.4); }
@@ -89,6 +106,25 @@
     a:hover::after {
       transform: scaleX(1);
     }
+    .neon-info {
+      color: #ff073a;
+      text-shadow: 0 0 8px rgba(255,7,58,0.8), 0 0 16px rgba(255,7,58,0.6);
+      font-family: 'Orbitron', sans-serif;
+      margin: 0.8rem 0;
+      transition: text-shadow 0.3s ease;
+    }
+    .waze {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0.8rem 0;
+    }
+    .waze img {
+      width: 32px;
+      height: 32px;
+      margin-right: 0.5rem;
+      filter: drop-shadow(0 0 8px rgba(57,255,20,0.7));
+    }
   </style>
 </head>
 <body>
@@ -96,6 +132,30 @@
     <h1>FreeForY🖤U</h1>
     <div class="highlight">Drive Safe</div>
     <p>Rue Lisière du bois 16<br>7063 Neufvilles</p>
+    <p class="neon-info">Pas d'achat de boisson sur place</p>
+    <div class="waze">
+      <img src="https://upload.wikimedia.org/wikipedia/fr/thumb/0/05/Waze-icon-2020.svg/1200px-Waze-icon-2020.svg.png" alt="Waze logo" />
+      <span>Pas de Waze</span>
+    </div>
+    <p class="neon-info">À partir de 2h</p>
   </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.0/gsap.min.js"></script>
+  <script>
+    // mise à jour des variables CSS selon la souris
+    window.addEventListener('mousemove', e => {
+      const x = (e.clientX / window.innerWidth) * 100;
+      const y = (e.clientY / window.innerHeight) * 100;
+      document.documentElement.style.setProperty('--mx', x + '%');
+      document.documentElement.style.setProperty('--my', y + '%');
+    });
+    // animations GSAP
+    gsap.timeline()
+      .from('.container', { opacity: 0, y: 50, duration: 1, ease: 'power3.out' })
+      .from('.highlight', { opacity: 0, scale: 0.8, duration: 0.6, ease: 'back.out(1.2)' }, '-=0.5');
+    gsap.to('.highlight', { textShadow: '0 0 20px rgba(255,7,58,1)', duration: 1.5, yoyo: true, repeat: -1, ease: 'sine.inOut' });
+    gsap.from('.neon-info', { opacity: 0, y: -10, stagger: 0.2, duration: 0.8, ease: 'power2.out', delay: 1 });
+    gsap.from('.waze img', { scale: 0, rotation: 360, duration: 1, ease: 'back.out(1.7)' });
+    gsap.to('.waze', { y: -8, yoyo: true, repeat: -1, duration: 1.2, ease: 'sine.inOut' });
+  </script>
 </body>
 </html>
