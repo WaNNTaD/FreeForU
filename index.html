@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="robots" content="noindex, nofollow">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>FreeForY🖤U</title>
+  <!-- Import Vue 3 -->
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
   <style>
     /* Import techno/neon fonts */
     @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
@@ -14,14 +15,9 @@
       --mx: 50%;
       --my: 50%;
     }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      background: #0d0d0d; /* fallback solide */
+      background: #0d0d0d;
       color: #fff;
       font-family: 'Orbitron', sans-serif;
       display: flex;
@@ -32,7 +28,6 @@
       padding: 1rem;
       overflow: hidden;
     }
-    /* calque de fond animé */
     body::before {
       content: "";
       position: fixed;
@@ -67,51 +62,29 @@
       margin-bottom: 1.2rem;
     }
     .highlight {
-      font-family: 'Orbitron', sans-serif;
       font-size: 1.2rem;
       font-weight: 700;
       color: #ff073a;
       text-shadow: 0 0 8px rgba(255,7,58,0.8), 0 0 16px rgba(255,7,58,0.6);
       margin-bottom: 1.5rem;
       animation: neon 1.5s ease-in-out infinite alternate;
-      transition: text-shadow 0.3s ease;
     }
     @keyframes neon {
       from { text-shadow: 0 0 5px rgba(255,7,58,0.6), 0 0 10px rgba(255,7,58,0.4); }
       to { text-shadow: 0 0 20px rgba(255,7,58,1), 0 0 30px rgba(255,7,58,0.8); }
     }
-    p {
+    p, li {
       font-size: 0.9rem;
       line-height: 1.6;
       color: #ccc;
       text-shadow: 0 0 4px rgba(255,255,255,0.2);
-    }
-    a {
-      color: #39ff14;
-      text-decoration: none;
-      position: relative;
-    }
-    a::after {
-      content: '';
-      position: absolute;
-      left: 0;
-      bottom: -3px;
-      width: 100%;
-      height: 2px;
-      background: #39ff14;
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform 0.3s ease;
-    }
-    a:hover::after {
-      transform: scaleX(1);
+      margin-bottom: 0.8rem;
     }
     .neon-info {
       color: #ff073a;
       text-shadow: 0 0 8px rgba(255,7,58,0.8), 0 0 16px rgba(255,7,58,0.6);
       font-family: 'Orbitron', sans-serif;
       margin: 0.8rem 0;
-      transition: text-shadow 0.3s ease;
     }
     .waze {
       display: flex;
@@ -125,37 +98,84 @@
       margin-right: 0.5rem;
       filter: drop-shadow(0 0 8px rgba(57,255,20,0.7));
     }
+    /* DJs styling */
+    .dj-section {
+      margin-top: 1.5rem;
+    }
+    .dj-heading {
+      font-size: 1rem;
+      margin-bottom: 0.6rem;
+      color: #39ff14;
+      text-shadow: 0 0 6px rgba(57,255,20,0.8);
+      font-family: 'Audiowide', cursive;
+    }
+    .dj-names {
+      display: flex;
+      justify-content: center;
+      gap: 1.2rem;
+    }
+    .dj {
+      font-family: 'Audiowide', cursive;
+      font-size: 1.1rem;
+      color: #39ff14;
+      text-shadow: 0 0 8px rgba(57,255,20,0.8), 0 0 16px rgba(57,255,20,0.6);
+      letter-spacing: 1px;
+    }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>FreeForY🖤U</h1>
-    <div class="highlight">Drive Safe</div>
-    <p>Rue Lisière du bois 16<br>7063 Neufvilles</p>
-    <p class="neon-info">Pas d'achat de boisson sur place</p>
+  <div id="app" class="container">
+    <h1>{{ title }}</h1>
+    <div class="highlight">{{ subtitle }}</div>
+    <p class="neon-info">{{ parkingInstruction }}</p>
+    <p v-html="address"></p>
+    <p class="neon-info">{{ noDrink }}</p>
     <div class="waze">
       <img src="https://upload.wikimedia.org/wikipedia/fr/thumb/0/05/Waze-icon-2020.svg/1200px-Waze-icon-2020.svg.png" alt="Waze logo" />
-      <span>Pas de Waze</span>
+      <span>{{ wazeText }}</span>
     </div>
-    <p class="neon-info">À partir de 2h</p>
+    <p class="neon-info">{{ startTime }}</p>
+    <div class="dj-section">
+      <div class="dj-heading">Line-up des DJs :</div>
+      <div class="dj-names">
+        <span v-for="dj in djs" :key="dj" class="dj">{{ dj }}</span>
+      </div>
+    </div>
   </div>
+
+  <!-- GSAP animations -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.0/gsap.min.js"></script>
   <script>
-    // mise à jour des variables CSS selon la souris
-    window.addEventListener('mousemove', e => {
-      const x = (e.clientX / window.innerWidth) * 100;
-      const y = (e.clientY / window.innerHeight) * 100;
-      document.documentElement.style.setProperty('--mx', x + '%');
-      document.documentElement.style.setProperty('--my', y + '%');
-    });
-    // animations GSAP
-    gsap.timeline()
-      .from('.container', { opacity: 0, y: 50, duration: 1, ease: 'power3.out' })
-      .from('.highlight', { opacity: 0, scale: 0.8, duration: 0.6, ease: 'back.out(1.2)' }, '-=0.5');
-    gsap.to('.highlight', { textShadow: '0 0 20px rgba(255,7,58,1)', duration: 1.5, yoyo: true, repeat: -1, ease: 'sine.inOut' });
-    gsap.from('.neon-info', { opacity: 0, y: -10, stagger: 0.2, duration: 0.8, ease: 'power2.out', delay: 1 });
-    gsap.from('.waze img', { scale: 0, rotation: 360, duration: 1, ease: 'back.out(1.7)' });
-    gsap.to('.waze', { y: -8, yoyo: true, repeat: -1, duration: 1.2, ease: 'sine.inOut' });
+    const { createApp } = Vue;
+    createApp({
+      data() {
+        return {
+          title: 'FreeForY🖤U',
+          subtitle: 'Drive Safe',
+          parkingInstruction: 'Garez vous intelligemment pour ne bloquer aucun véhicule, je n\'ai pas envie de faire la circulation',
+          address: 'Rue Lisière du bois 16<br>7063 Neufvilles',
+          noDrink: 'Pas d\'achat de boisson sur place',
+          wazeText: 'Pas de Waze',
+          startTime: 'À partir de 2h',
+          djs: ['ZKU', 'Techsouye', 'Antoine']
+        };
+      },
+      mounted() {
+        window.addEventListener('mousemove', e => {
+          const x = (e.clientX / window.innerWidth) * 100;
+          const y = (e.clientY / window.innerHeight) * 100;
+          document.documentElement.style.setProperty('--mx', x + '%');
+          document.documentElement.style.setProperty('--my', y + '%');
+        });
+        const tl = gsap.timeline();
+        tl.from('.container', { opacity: 0, y: 50, duration: 1, ease: 'power3.out' })
+          .from('.highlight', { opacity: 0, scale: 0.8, duration: 0.6, ease: 'back.out(1.2)' }, '-=0.5');
+        gsap.to('.highlight', { textShadow: '0 0 20px rgba(255,7,58,1)', duration: 1.5, yoyo: true, repeat: -1, ease: 'sine.inOut' });
+        gsap.from('.neon-info', { opacity: 0, y: -10, stagger: 0.2, duration: 0.8, ease: 'power2.out', delay: 1 });
+        gsap.from('.waze img', { scale: 0, rotation: 360, duration: 1, ease: 'back.out(1.7)' });
+        gsap.to('.waze', { y: -8, yoyo: true, repeat: -1, duration: 1.2, ease: 'sine.inOut' });
+      }
+    }).mount('#app');
   </script>
 </body>
 </html>
